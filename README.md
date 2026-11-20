@@ -36,27 +36,35 @@ Smart meters produce fine-grained consumption data that is useful for demand for
 ## Method
 
 ### 1. Preprocessing
-- [Missing value handling, e.g. forward fill / interpolation]
-- [Scaling, e.g. Min-Max normalization fit on training data only]
-- Sliding windows: the previous **[N]** time steps are used to predict the next **[M]** step(s)
+- **Missing values:** none present. The notebook asserts that the daily series has no gaps.
+- **Dropped columns:** the row-counter columns `Day` and `Day.1`, so the model cannot memorise position in time. Also `day_of_week`, which matches the real weekday for only 67% of rows; the weekday is recomputed from `Date`.
+- **Scaling:** Min-Max normalization fit on the **training rows only**. Inputs and target have separate scalers. Metrics are reported in kWh after inverse-transforming.
+- **Sliding windows:** the previous **14** days are used to predict the next **1** day. Only past days are used as inputs, including past weather.
 
 ### 2. Model
 | Component | Setting |
 |---|---|
-| Architecture | [e.g. 2-layer LSTM, 64 hidden units, dropout 0.2, dense output] |
-| Loss | [e.g. MSE] |
-| Optimizer | [e.g. Adam, lr = 0.001] |
-| Framework | [PyTorch / TensorFlow / Flower / TFF] |
+| Architecture | 1-layer LSTM, 32 hidden units, linear output |
+| Loss | MSE |
+| Optimizer | Adam, lr = 0.001, batch size 32 |
+| Model selection | Early stopping on validation loss (patience 40, max 500 epochs) |
+| Framework | PyTorch, with FedAvg implemented from scratch |
 
 ### 3. Federated setup
 | Setting | Value |
 |---|---|
-| Number of clients | [e.g. 5 simulated households] |
-| How data was partitioned | [e.g. by household / by time period / randomly] |
-| Aggregation | [e.g. FedAvg] |
-| Communication rounds | [e.g. 50] |
-| Local epochs per round | [e.g. 2] |
-| Clients per round | [e.g. all / fraction] |
+| Number of clients | 3 simulated clients |
+| How data was partitioned | By time: the training period is split into three contiguous segments of ~300 samples each. Each segment covers different seasons, so the clients are non-IID. |
+| Aggregation | FedAvg: every parameter is averaged, weighted by client sample count |
+| Communication rounds | Up to 300, keeping the round with the best validation loss (patience 40) |
+| Local epochs per round | 2 |
+| Clients per round | All |
+
+### Baselines
+- **Naive:** predicts yesterday's value.
+- **Seasonal naive:** predicts the value from 7 days earlier.
+- **Local:** one LSTM per client, trained on that client's data only.
+- **Centralized:** one LSTM trained on all training data pooled.
 
 ---
 
