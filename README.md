@@ -1,10 +1,3 @@
-<!--
-  WHERE THIS GOES: add as README.md in the Energy-Consumption-Using-LSTM-and-Federated-Learning repo.
-  IMPORTANT: everything in [square brackets] must come from YOUR actual experiments.
-  Never put in a number you haven't measured. Admissions readers and interviewers may ask about it.
-  If you haven't run the centralized-vs-federated comparison yet, that's the single most
-  valuable thing to add to this project.
--->
 
 # ⚡ Federated Energy Forecasting with LSTMs
 
@@ -12,7 +5,6 @@
 
 This project forecasts household electricity consumption using an LSTM network, and compares a conventional **centralized** model (all data pooled on one server) against a **federated** model (each household trains locally and only shares model updates).
 
-<!-- Optional: put your best forecast plot right here, e.g.  ![Forecast vs actual](figures/forecast.png) -->
 
 ---
 
