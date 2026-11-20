@@ -60,14 +60,6 @@ Smart meters produce fine-grained consumption data that is useful for demand for
 
 ---
 
-## Results
-
-| Model | RMSE ↓ | MAE ↓ | [MAPE ↓] |
-|---|---|---|---|
-| Naive baseline (previous value) | [ ] | [ ] | [ ] |
-| Centralized LSTM | [ ] | [ ] | [ ] |
-| Federated LSTM (FedAvg) | [ ] | [ ] | [ ] |
-
 ### Key findings
 - [e.g. The federated model reached RMSE of X vs Y for the centralized model, retaining most of the accuracy without sharing raw data.]
 - [e.g. Convergence required ~Z rounds; performance plateaued after that.]
