@@ -25,11 +25,7 @@ Smart meters produce fine-grained consumption data that is useful for demand for
 ## Dataset
 
 - **Coverage:** household electricity readings from 2016 to 2024, split across two files (`2016–2019`, `2020–2024`)
-- **Granularity:** [e.g. hourly / daily]
-- **Features used:** [e.g. consumption (kWh), timestamp features such as hour, weekday, month; weather if any]
-- **Train / validation / test split:** [e.g. chronological split: 2016–2022 train, 2023 validation, 2024 test]
-
-> Note: splitting chronologically (rather than randomly) avoids leaking future information into training.
+- **Granularity:** daily
 
 ---
 
@@ -65,13 +61,6 @@ Smart meters produce fine-grained consumption data that is useful for demand for
 - **Seasonal naive:** predicts the value from 7 days earlier.
 - **Local:** one LSTM per client, trained on that client's data only.
 - **Centralized:** one LSTM trained on all training data pooled.
-
----
-
-### Key findings
-- [e.g. The federated model reached RMSE of X vs Y for the centralized model, retaining most of the accuracy without sharing raw data.]
-- [e.g. Convergence required ~Z rounds; performance plateaued after that.]
-- [e.g. Clients with unusual consumption patterns had higher error, suggesting non-IID data hurts the shared model.]
 
 ---
 
